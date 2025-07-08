@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filtros de Motor - Taller Automotriz Mora</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      padding: 0;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* BARRA DE NAVEGACIÓN */
+    .barra-navegacion {
+      background-color: #003366;
+      padding: 10px 0;
+    }
+
+    .contenedor-navbar {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      flex-wrap: wrap;
+    }
+
+    .logo-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-nav img {
+      width: 50px;
+      height: auto;
+    }
+
+    .logo-nav p {
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    .menu-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .menu-nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .menu-nav ul li a:hover {
+      color: #d71a29;
+    }
+
+    .iconos-redes {
+      display: none;
+    }
+
+    /* CONTENIDO PRINCIPAL */
+    .main-content {
+      padding: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: clamp(24px, 5vw, 32px);
+    }
+    
+    .lista-productos {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    
+    .producto-linea {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      padding: 15px 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .producto-linea:hover {
+      background-color: #f5f5f5;
+    }
+    
+    .producto-linea img {
+      width: 100px;
+      height: 80px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    
+    .producto-info {
+      flex: 1;
+    }
+    
+    .producto-info h2 {
+      font-size: clamp(16px, 4vw, 18px);
+      margin-bottom: 5px;
+      color: #333;
+    }
+    
+    .producto-info p {
+      font-size: clamp(13px, 3vw, 14px);
+      color: #666;
+      margin: 0;
+    }
+
+    /* ESTILOS DE PAGINACIÓN */
+    .paginacion {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 40px auto;
+      padding: 20px;
+      max-width: 1000px;
+    }
+
+    .paginacion button {
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      background: #fff;
+      color: #333;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      min-width: 40px;
+      height: 40px;
+    }
+
+    .paginacion button:hover:not(:disabled) {
+      background: #f0f0f0;
+      border-color: #007bff;
+      color: #007bff;
+    }
+
+    .paginacion button.active {
+      background: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    .paginacion button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .info-pagina {
+      text-align: center;
+      margin: 20px auto;
+      color: #666;
+      font-size: 14px;
+      max-width: 1000px;
+    }
+    
+    /* MODAL STYLES */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; 
+      left: 0;
+      width: 100%; 
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 10px;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 10px;
+      max-width: 600px;
+      max-height: 90%;
+      width: 90%;
+      overflow-y: auto;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      cursor: pointer;
+      z-index: 1001;
+      background: rgba(255,255,255,0.9);
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+    }
+    
+    .close-btn:hover {
+      background: rgba(255,255,255,1);
+    }
+    
+    /* CONTENEDOR DE LA IMAGEN EN EL MODAL */
+    .modal-image-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin: 40px 0 20px;
+    }
+    
+    /* IMAGEN PRINCIPAL EN MODAL */
+    .modal-image-container img {
+      max-width: 400px;
+      max-height: 300px;
+      height: auto;
+      object-fit: contain;
+    }
+    
+    /* BOTONES DE NAVEGACIÓN EN EL MODAL */
+    .nav-button {
+      font-size: 24px;
+      padding: 12px 16px;
+      cursor: pointer;
+      background-color: #007BFF;
+      color: #fff;
+      border-radius: 8px;
+      border: none;
+      transition: background-color 0.2s;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+    
+    .nav-button:hover {
+      background-color: #0056b3;
+    }
+    
+    .nav-button.left {
+      left: 10px;
+    }
+    
+    .nav-button.right {
+      right: 10px;
+    }
+    
+    /* MINIATURAS */
+    .miniaturas {
+      margin: 20px 0;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 100%;
+    }
+    
+    .miniaturas img {
+      width: 60px;
+      height: 50px;
+      object-fit: contain;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      transition: border-color 0.2s;
+    }
+    
+    .miniaturas img:hover,
+    .miniaturas img.active {
+      border-color: #007bff;
+    }
+    
+    /* TEXTO DEL MODAL */
+    .modal-text {
+      width: 100%;
+      text-align: left;
+      padding: 0 10px;
+    }
+    
+    .modal-text h2 {
+      margin: 0 0 15px;
+      font-size: clamp(18px, 4vw, 22px);
+      color: #333;
+    }
+    
+    .modal-text p {
+      margin: 8px 0;
+      font-size: clamp(14px, 3vw, 16px);
+      color: #444;
+      line-height: 1.5;
+    }
+    
+    /* RESPONSIVE PARA MÓVILES */
+    @media (max-width: 768px) {
+      .contenedor-navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+        text-align: center;
+      }
+
+      .logo-nav {
+        justify-content: center;
+      }
+
+      .logo-nav img {
+        width: 40px;
+      }
+
+      .logo-nav p {
+        font-size: 12px;
+      }
+
+      .menu-nav ul {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .menu-nav ul li a {
+        font-size: 12px;
+        padding: 5px 10px;
+        display: block;
+      }
+
+      .main-content {
+        padding: 15px;
+      }
+    
+      .producto-linea {
+        padding: 20px 15px 25px;
+      }
+      
+      .producto-linea img {
+        width: 120px;
+        height: 100px;
+      }
+
+      .paginacion {
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+
+      .paginacion button {
+        padding: 8px 12px;
+        min-width: 35px;
+        height: 35px;
+        font-size: 12px;
+      }
+      
+      .modal-content {
+        padding: 15px;
+        margin: 5px;
+        max-width: 95%;
+        width: 95%;
+      }
+      
+      .modal-image-container {
+        margin: 50px 0 25px;
+      }
+      
+      .modal-image-container img {
+        max-width: calc(100% - 100px);
+        min-height: 250px;
+        max-height: none;
+      }
+      
+      .nav-button {
+        font-size: 20px;
+        padding: 10px 14px;
+      }
+      
+      .nav-button.left {
+        left: 5px;
+      }
+      
+      .nav-button.right {
+        right: 5px;
+      }
+      
+      .miniaturas {
+        margin: 25px 0;
+        gap: 8px;
+      }
+      
+      .miniaturas img {
+        width: 70px;
+        height: 60px;
+      }
+      
+      .modal-text {
+        padding: 0 5px;
+      }
+    }
+    
+    /* RESPONSIVE PARA PANTALLAS MUY PEQUEÑAS */
+    @media (max-width: 480px) {
+      .producto-linea img {
+        width: 100px;
+        height: 80px;
+      }
+      
+      .modal-image-container img {
+        min-height: 200px;
+        max-width: calc(100% - 80px);
+        max-height: none;
+      }
+      
+      .miniaturas img {
+        width: 55px;
+        height: 45px;
+      }
+      
+      .nav-button {
+        font-size: 18px;
+        padding: 8px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- BARRA DE NAVEGACIÓN -->
+<header class="barra-navegacion">
+  <div class="contenedor-navbar">
+    <div class="logo-nav">
+      <img src="Img/AM.png" alt="Logo AM">
+      <p>AUTOMOTRIZ MORA</p>
+    </div>
+    
+    <nav class="menu-nav">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="index.html#services">Servicios</a></li>
+        <li><a href="index.html#about">Nosotros</a></li>
+        <li><a href="index.html#contact">Contacto</a></li>
+        <li><a href="index.html#brands-carousel">Marcas</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- CONTENIDO PRINCIPAL -->
+<div class="main-content">
+
+<h1>Filtros de Cabina (aire acondicionado)</h1>
+
+<div class="info-pagina" id="infoPagina">
+  Mostrando productos 1 - 5 de 9
+</div>
+
+<div class="lista-productos" id="listaProductos">
+  <!-- Los productos se cargarán aquí dinámicamente -->
+</div>
+
+<div class="paginacion" id="paginacion">
+  <!-- La paginación se generará aquí -->
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" title="Cerrar" aria-label="Cerrar" tabindex="0" role="button" 
+          onclick="cerrarModal()">&times;</span>
+    <div class="modal-image-container">
+      <button class="nav-button left" id="prevBtn" title="Anterior">&laquo;</button>
+      <img id="modal-img" src="" alt="Vista principal">
+      <button class="nav-button right" id="nextBtn" title="Siguiente">&raquo;</button>
+    </div>
+    <div class="miniaturas" id="miniaturas"></div>
+    <div class="modal-text">
+      <h2 id="modal-titulo"></h2>
+      <p><strong>Marca:</strong> <span id="modal-marca"></span></p>
+      <p id="modal-desc"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+const todosLosProductos = [
+  {
+    id: 1,
+    titulo: 'SAIL',
+    marca: 'Advance',
+    imagenes: ['filtros/cab1.png', 'filtros/cab1.1.png', 'filtros/cab1.2.png'],
+    descripcion: 'Filtro exclusivo para vehículo Sail. Evita que la suciedad y otros elementos dañen o saturen el sistema de ventilación y aire acondicionado.'
+  },
+  {
+    id: 2,
+    titulo: 'CHERRY ARRIZO 5',
+    marca: 'Advance',
+    imagenes: ['filtros/cab2.png', 'filtros/cab2.1.png', 'filtros/cab2.2.png'],
+    descripcion: 'Filtro de aire especialmente diseñado para el Chery Arrizo 5. Previene la acumulación de suciedad en el sistema de aire acondicionado, alargando su duración y eficiencia.'
+  },
+  {
+    id: 3,
+    titulo: 'KIA RIO GT Y OTROS',
+    marca: 'Advance',
+    imagenes: ['filtros/cab3.png', 'filtros/cab3.1.png', 'filtros/cab3.2.png'],
+    descripcion: 'Filtro de cabina para vehículos Kia: Rio, Rio GT, Rio Sport GT. Fabricado para garantizar una alta capacidad de filtrado y una vida útil prolongada.'
+  },
+  {
+    id: 4,
+    titulo: 'TUCSON / KIA SPROTAGE / JAC',
+    marca: 'Advance',
+    imagenes: ['filtros/cab4.png', 'filtros/cab4.1.png', 'filtros/cab4.2.png'],
+    descripcion: 'Compatible con los vehículos: Tucson, Kia Sportage, JAC, Kia Rio Xcite Excelente rendimiento y durabilidad. Ayuda a reducir olores y alérgenos, creando un ambiente más cómodo y saludable para todos los pasajeros.'
+  },
+  {
+    id: 5,
+    titulo: 'TOYOTA HILUX - FORTUNER',
+    marca: 'Advance',
+    imagenes: ['filtros/cab5.png', 'filtros/cab5.1.png', 'filtros/cab5.2.png'],
+    descripcion: 'Filtro para la cabina es compatible con los vehículos: Toyota Hilux, Toyota Frontier, JAC T6. Previene la acumulación de suciedad en el sistema de aire acondicionado, alargando su duración y eficiencia.'
+  },
+  {
+    id: 6,
+    titulo: 'KIA PICANTO',
+    marca: 'Advance',
+    imagenes: ['filtros/cab6.png', 'filtros/cab6.1.png', 'filtros/cab6.2.png'],
+    descripcion: 'Especialmente diseñado para Kia Picanto, garantizando un ajuste perfecto y una instalación rápida y segura.'
+  },
+  {
+    id: 7,
+    titulo: 'AVEO FAMILY - ACTIVO / CHEVITAXI',
+    marca: 'Advance',
+    imagenes: ['filtros/cab7.png', 'filtros/cab7.1.png', 'filtros/cab7.2.png'],
+    descripcion: 'Diseñado para los vehículos chevrolete como: Aveo Family, Aveo Activo y Chevitaxi. Ayuda a que el sistema de aire acondicionado funcione de manera eficaz y prolongue su vida útil al mantenerlo libre de suciedad.'
+  },
+  {
+    id: 8,
+    titulo: 'KIA RIO X - KIA RIO SPORT GT',
+    marca: 'Advance',
+    imagenes: ['filtros/cab8.png', 'filtros/cab8.1.png', 'filtros/cab8.2.png'],
+    descripcion: 'Filtro de cabina exclusivo para Kia Rios X y Kia Rio Sport GT, Kia Rio GT'
+  }
+];
+
+// VARIABLES DE PAGINACIÓN
+let paginaActual = 1;
+const productosPorPagina = 5; 
+let imagenesActuales = [];
+let indiceImagen = 0;
+
+// FUNCIÓN PARA MOSTRAR PRODUCTOS DE LA PÁGINA ACTUAL
+function mostrarProductos() {
+  const inicio = (paginaActual - 1) * productosPorPagina;
+  const fin = inicio + productosPorPagina;
+  const productosActuales = todosLosProductos.slice(inicio, fin);
+  
+  const listaProductos = document.getElementById('listaProductos');
+  listaProductos.innerHTML = '';
+  
+  productosActuales.forEach(producto => {
+    const productoHTML = `
+      <div class="producto-linea" onclick="abrirModal('${producto.titulo}', '${producto.marca}', ${JSON.stringify(producto.imagenes).replace(/"/g, '&quot;')}, '${producto.descripcion}')">
+        <img src="${producto.imagenes[0]}" alt="Filtro Cabina">
+        <div class="producto-info">
+          <h2>${producto.titulo}</h2>
+          <p>Accede para ver los detalles de compatibilidad</p>
+        </div>
+      </div>
+    `;
+    listaProductos.innerHTML += productoHTML;
+  });
+  
+  actualizarInfoPagina();
+}
+
+// FUNCIÓN PARA GENERAR PAGINACIÓN
+function generarPaginacion() {
+  const totalPaginas = Math.ceil(todosLosProductos.length / productosPorPagina);
+  const paginacion = document.getElementById('paginacion');
+  
+  if (totalPaginas <= 1) {
+    paginacion.style.display = 'none';
+    return;
+  }
+  
+  paginacion.style.display = 'flex';
+  paginacion.innerHTML = '';
+  
+  // Botón Anterior
+  const btnAnterior = document.createElement('button');
+  btnAnterior.innerHTML = '« Anterior';
+  btnAnterior.onclick = () => cambiarPagina(paginaActual - 1);
+  btnAnterior.disabled = paginaActual === 1;
+  paginacion.appendChild(btnAnterior);
+  
+  // Números de página
+  for (let i = 1; i <= totalPaginas; i++) {
+    const btnPagina = document.createElement('button');
+    btnPagina.innerHTML = i;
+    btnPagina.onclick = () => cambiarPagina(i);
+    if (i === paginaActual) {
+      btnPagina.classList.add('active');
+    }
+    paginacion.appendChild(btnPagina);
+  }
+  
+  // Botón Siguiente
+  const btnSiguiente = document.createElement('button');
+  btnSiguiente.innerHTML = 'Siguiente »';
+  btnSiguiente.onclick = () => cambiarPagina(paginaActual + 1);
+  btnSiguiente.disabled = paginaActual === totalPaginas;
+  paginacion.appendChild(btnSiguiente);
+}
+
+// FUNCIÓN PARA CAMBIAR DE PÁGINA
+function cambiarPagina(nuevaPagina) {
+  const totalPaginas = Math.ceil(todosLosProductos.length / productosPorPagina);
+  
+  if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+    paginaActual = nuevaPagina;
+    mostrarProductos();
+    generarPaginacion();
+    
+    // Scroll suave hacia arriba
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+}
+
+// FUNCIÓN PARA ACTUALIZAR INFO DE PÁGINA
+function actualizarInfoPagina() {
+  const inicio = (paginaActual - 1) * productosPorPagina + 1;
+  const fin = Math.min(paginaActual * productosPorPagina, todosLosProductos.length);
+  const total = todosLosProductos.length;
+  
+  document.getElementById('infoPagina').textContent = 
+    `Mostrando productos ${inicio} - ${fin} de ${total}`;
+}
+
+// FUNCIONES DEL MODAL (mantenidas igual)
+function abrirModal(titulo, marca, imagenes, descripcion) {
+  imagenesActuales = imagenes;
+  indiceImagen = 0;
+
+  document.getElementById("modal").style.display = "flex";
+  actualizarImagenModal();
+
+  document.getElementById("modal-titulo").textContent = titulo;
+  document.getElementById("modal-marca").textContent = marca;
+  document.getElementById("modal-desc").textContent = descripcion;
+
+  const miniaturas = document.getElementById("miniaturas");
+  miniaturas.innerHTML = '';
+  imagenes.forEach((img, idx) => {
+    const thumb = document.createElement("img");
+    thumb.src = img;
+    thumb.alt = `Vista ${idx + 1}`;
+    thumb.onclick = () => {
+      indiceImagen = idx;
+      actualizarImagenModal();
+      actualizarMiniaturas();
+    };
+    miniaturas.appendChild(thumb);
+  });
+  
+  actualizarMiniaturas();
+}
+
+function actualizarImagenModal() {
+  const imagenPrincipal = document.getElementById("modal-img");
+  imagenPrincipal.src = imagenesActuales[indiceImagen];
+}
+
+function actualizarMiniaturas() {
+  const thumbs = document.querySelectorAll(".miniaturas img");
+  thumbs.forEach((thumb, idx) => {
+    thumb.classList.toggle('active', idx === indiceImagen);
+  });
+}
+
+function cerrarModal() {
+  document.getElementById("modal").style.display = "none";
+}
+
+// Event listeners del modal
+document.getElementById("modal").addEventListener("click", function(e) {
+  if (e.target === this) {
+    cerrarModal();
+  }
+});
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape" && document.getElementById("modal").style.display === "flex") {
+    cerrarModal();
+  }
+});
+
+document.getElementById("prevBtn").addEventListener("click", () => {
+  indiceImagen = (indiceImagen > 0) ? indiceImagen - 1 : imagenesActuales.length - 1;
+  actualizarImagenModal();
+  actualizarMiniaturas();
+});
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  indiceImagen = (indiceImagen < imagenesActuales.length - 1) ? indiceImagen + 1 : 0;
+  actualizarImagenModal();
+  actualizarMiniaturas();
+});
+
+document.addEventListener("keydown", function(e) {
+  if (document.getElementById("modal").style.display === "flex") {
+    if (e.key === "ArrowLeft") {
+      document.getElementById("prevBtn").click();
+    } else if (e.key === "ArrowRight") {
+      document.getElementById("nextBtn").click();
+    }
+  }
+});
+
+// INICIALIZACIÓN
+mostrarProductos();
+generarPaginacion();
+</script>
+
+</body>
+</html>

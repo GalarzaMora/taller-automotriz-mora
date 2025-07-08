@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taller Automotriz Mora</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"> 
+</head>
+<body>
+  <header class="barra-navegacion">
+  <div class="contenedor-navbar">
+    <div class="logo-nav">
+      <img src="Img/AM.png" alt="Logo AM">
+      <p>AUTOMOTRIZ MORA</p>
+    </div>
+
+    <nav class="menu-nav">
+      <ul>
+        <li><a href="#services">Servicios</a></li>
+        <li><a href="#about">Nosotros</a></li>
+        <li><a href="#contact">Contacto</a></li>
+        <li><a href="#brands-carousel">Marcas</a></li>
+      </ul>
+    </nav>
+
+    <div class="iconos-redes">
+      <a href="https://www.facebook.com/p/Taller-Automotriz-Mora-100057616781041/?locale=es_LA" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/automotriz_mora?igsh=MTUxYnY5YjZiNjd6cQ==" target="_blank"><i class="fab fa-instagram"></i></a>
+    </div>
+  </div>
+</header>
+
+
+  <section id="hero">
+    <div class="hero-content">
+      <h2>Bienvenidos a Taller Automotriz Mora</h2>
+      <p>Soluciones automotrices de confianza, reparación y mantenimiento de vehículos.</p>
+    </div>
+  </section>
+
+  <section id="services">
+  <h2>Nuestros Servicios</h2>
+  <div class="service-list">
+    <div class="service-item" data-image="img/mantenimiento.jpg">
+      <i class="fas fa-wrench"></i>
+      <h3>Mantenimiento Preventivo</h3>
+      <p>Extiende la vida útil de tu vehículo con nuestros servicios programados.</p>
+      <div class="hover-image">
+        <img src="img/mantenimiento.jpg" alt="Mantenimiento Preventivo">
+      </div>
+    </div>
+    
+    <div class="service-item" data-image="img/comp.jpg">
+      <i class="fas fa-laptop"></i>
+      <h3>Diagnóstico Computarizado</h3>
+      <p>Tecnología de punta para identificar problemas rápidamente.</p>
+      <div class="hover-image">
+        <img src="img/comp.jpg" alt="Diagnóstico Computarizado">
+      </div>
+    </div>
+    
+    <div class="service-item" data-image="img/motor.jpg">
+      <i class="fas fa-car"></i>
+      <h3>Reparación de Motor</h3>
+      <p>Soluciones integrales para motores de todas las marcas.</p>
+      <div class="hover-image">
+        <img src="img/motor.jpg" alt="Reparación de Motor">
+      </div>
+    </div>
+  </div>
+</section>
+
+  <section id="about">
+    <div class="nosotros-container">
+       <div class="texto-nosotros">
+        <h2>
+          <span class="decoracion-lineas"></span>
+           NOSOTROS
+          <span class="decoracion-lineas-derecha"></span>
+        </h2>
+
+    <p>En Taller Automotriz, nos especializamos en brindar soluciones rápidas y confiables para tu vehículo. Con años de experiencia, garantizamos un servicio de calidad con un equipo profesional y capacitado.</p>
+  </div>
+    <div class="fondo-icono">
+      <img src="img/nosotros.jpg" alt="Icono Herramientas">
+    </div>
+  </div>
+  </section>
+
+<section id="brands-carousel">
+  <h2>Marcas con las que Trabajamos</h2>
+  <div class="carousel-container">
+    <div class="carousel-track">
+      
+      <img src="img/logo-Shogun-Gold.png" alt="SHOGUN">
+      <img src="img/golden-logo.png" alt="Golden Bear">
+      <img src="img/total-logo.jpg" alt="Total Quartz">
+      <img src="img/movil-logo.png" alt="Mobil">
+      <img src="img/advance-logo.JPG" alt="Advance Filters">
+      <img src="img/vistony-logo.png" alt="vistony">
+      <img src="img/phillip-logo.png" alt="Phillip">
+
+      <!-- bucle -->
+      <img src="img/logo-Shogun-Gold.png" alt="SHOGUN">
+      <img src="img/golden-logo.png" alt="Golden Bear">
+      <img src="img/total-logo.jpg" alt="Total Quartz">
+      <img src="img/movil-logo.png" alt="Mobil">
+      <img src="img/advance-logo.JPG" alt="Advance Filters">
+      <img src="img/vistony-logo.png" alt="vistony">
+      <img src="img/phillip-logo.png" alt="Phillip">
+
+    </div>
+  </div>
+</section>
+
+
+
+<section id="productos">
+  <h2>Productos Principales</h2>
+  <div class="productos-container">
+    <!-- FILTROS -->
+    <div class="producto-item">
+      <img src="img/FILTROS.jpg" alt="FILTROS">
+      <h3>FILTROS</h3>
+      <p>FILTROS DE AIRE DE MOTOR, GASOLINA, CABINA.</p>
+      <a href="javascript:void(0);" onclick="verMas('FILTROS')">Ver más</a>
+    </div>
+
+    <!-- ACEITES -->
+    <div class="producto-item">
+      <img src="img/ACEITES.jpg" alt="ACEITES">
+      <h3>ACEITES Y MÁS</h3>
+      <p>DIFERENTE MARCAS Y VISCOSIDAD DE ACEITE</p>
+      <a href="javascript:void(0);" onclick="verMas('ACEITES')">Ver más</a>
+    </div>
+
+    <!-- REPUESTOS -->
+    <div class="producto-item">
+      <img src="img/REPUESTOS.jpg" alt="REPUESTOS">
+      <h3>REPUESTOS Y MÁS</h3>
+      <p>PARA SU VEHICULO</p>
+      <a href="javascript:void(0);" onclick="verMas('REPUESTOS')">Ver más</a>
+    </div>
+  </div>
+</section>
+
+
+  <section id="contact">
+    <h2>Contáctanos</h2>
+    <div class="contact-info">
+      <p><strong>Dirección:</strong> <a href="https://www.google.com/maps/place/Taller+AUTOMOTRIZ+MORA/@-2.1103463,-79.9561824,17z/data=!3m1!4b1!4m6!3m5!1s0x902d0d86eaee1a1d:0x6bed2f021b787b4e!8m2!3d-2.1103463!4d-79.9561824!16s%2Fg%2F11frtjk4p0?entry=ttu&g_ep=EgoyMDI1MDUwNy4wIKXMDSoASAFQAw%3D%3D" target="_blank">El Fortín, Guayaquil, Ecuador</a></p>
+    </div>
+
+    <!-- Mapa de Google incrustado -->
+    <div class="map-container">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3987.1122678591823!2d-79.9561824!3d-2.1103463!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x902d0d86eaee1a1d%3A0x6bed2f021b787b4e!2sTaller%20AUTOMOTRIZ%20MORA!5e0!3m2!1ses-419!2sec!4v1747077600929!5m2!1ses-419!2sec" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Taller Automotriz Mora. Todos los derechos reservados.</p>
+  </footer>
+
+
+<script>
+  // verificar si el usuario está registrado
+  function verMas(producto) {
+    const usuario = JSON.parse(localStorage.getItem("user"));
+
+    if (!usuario) {
+    localStorage.setItem("productoPendiente", producto);
+
+      // redirigir a la página de registro si no se encuentra registrado
+      alert("Por favor, registrate para acceder a los productos que ofrece el taller");
+      window.location.href = "registro.html"; 
+    } else {
+      // usuario registrado, redirigir a la página de detalles del producto correspondiente
+      if (producto === "FILTROS") {
+        window.location.href = "FILTROS.html"; 
+      } else if (producto === "ACEITES") {
+        window.location.href = "ACEITES.html"; 
+      } else if (producto === "REPUESTOS") {
+        window.location.href = "REPUESTOS.html";
+      }
+    }
+  }
+</script> 
+</body>
+</html>

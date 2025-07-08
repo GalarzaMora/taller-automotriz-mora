@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filtros de Motor - Taller Automotriz Mora</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      padding: 0;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* BARRA DE NAVEGACIÓN */
+    .barra-navegacion {
+      background-color: #003366;
+      padding: 10px 0;
+    }
+
+    .contenedor-navbar {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      flex-wrap: wrap;
+    }
+
+    .logo-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-nav img {
+      width: 50px;
+      height: auto;
+    }
+
+    .logo-nav p {
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    .menu-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .menu-nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .menu-nav ul li a:hover {
+      color: #d71a29;
+    }
+
+    .iconos-redes {
+      display: none;
+    }
+
+    /* CONTENIDO PRINCIPAL */
+    .main-content {
+      padding: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: clamp(24px, 5vw, 32px);
+    }
+    
+    .lista-productos {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    
+    .producto-linea {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      padding: 15px 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .producto-linea:hover {
+      background-color: #f5f5f5;
+    }
+    
+    .producto-linea img {
+      width: 100px;
+      height: 80px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    
+    .producto-info {
+      flex: 1;
+    }
+    
+    .producto-info h2 {
+      font-size: clamp(16px, 4vw, 18px);
+      margin-bottom: 5px;
+      color: #333;
+    }
+    
+    .producto-info p {
+      font-size: clamp(13px, 3vw, 14px);
+      color: #666;
+      margin: 0;
+    }
+
+    
+    .paginacion {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 40px auto;
+      padding: 20px;
+      max-width: 1000px;
+    }
+
+    .paginacion button {
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      background: #fff;
+      color: #333;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      min-width: 40px;
+      height: 40px;
+    }
+
+    .paginacion button:hover:not(:disabled) {
+      background: #f0f0f0;
+      border-color: #007bff;
+      color: #007bff;
+    }
+
+    .paginacion button.active {
+      background: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    .paginacion button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .info-pagina {
+      text-align: center;
+      margin: 20px auto;
+      color: #666;
+      font-size: 14px;
+      max-width: 1000px;
+    }
+    
+    /* MODAL STYLES */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; 
+      left: 0;
+      width: 100%; 
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 10px;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 10px;
+      max-width: 600px;
+      max-height: 90%;
+      width: 90%;
+      overflow-y: auto;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      cursor: pointer;
+      z-index: 1001;
+      background: rgba(255,255,255,0.9);
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+    }
+    
+    .close-btn:hover {
+      background: rgba(255,255,255,1);
+    }
+    
+    /* CONTENEDOR DE LA IMAGEN RECUADRO MODAL */
+    .modal-image-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin: 40px 0 20px;
+    }
+    
+    /* IMAGEN PRINCIPAL EN MODAL */
+    .modal-image-container img {
+      max-width: 400px;
+      max-height: 300px;
+      height: auto;
+      object-fit: contain;
+    }
+    
+    /* BOTONES DE NAVEGACIÓN*/
+    .nav-button {
+      font-size: 24px;
+      padding: 12px 16px;
+      cursor: pointer;
+      background-color: #007BFF;
+      color: #fff;
+      border-radius: 8px;
+      border: none;
+      transition: background-color 0.2s;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+    
+    .nav-button:hover {
+      background-color: #0056b3;
+    }
+    
+    .nav-button.left {
+      left: 10px;
+    }
+    
+    .nav-button.right {
+      right: 10px;
+    }
+    
+    /* MINIATURAS */
+    .miniaturas {
+      margin: 20px 0;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 100%;
+    }
+    
+    .miniaturas img {
+      width: 60px;
+      height: 50px;
+      object-fit: contain;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      transition: border-color 0.2s;
+    }
+    
+    .miniaturas img:hover,
+    .miniaturas img.active {
+      border-color: #007bff;
+    }
+    
+    /* TEXTO DEL MODAL */
+    .modal-text {
+      width: 100%;
+      text-align: left;
+      padding: 0 10px;
+    }
+    
+    .modal-text h2 {
+      margin: 0 0 15px;
+      font-size: clamp(18px, 4vw, 22px);
+      color: #333;
+    }
+    
+    .modal-text p {
+      margin: 8px 0;
+      font-size: clamp(14px, 3vw, 16px);
+      color: #444;
+      line-height: 1.5;
+    }
+    
+    
+    /* MÓVILES */
+    @media (max-width: 768px) {
+      .contenedor-navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+        text-align: center;
+      }
+
+      .logo-nav {
+        justify-content: center;
+      }
+
+      .logo-nav img {
+        width: 40px;
+      }
+
+      .logo-nav p {
+        font-size: 12px;
+      }
+
+      .menu-nav ul {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .menu-nav ul li a {
+        font-size: 12px;
+        padding: 5px 10px;
+        display: block;
+      }
+
+      .main-content {
+        padding: 15px;
+      }
+    
+      .producto-linea {
+        padding: 20px 15px 25px;
+      }
+      
+      .producto-linea img {
+        width: 120px;
+        height: 100px;
+      }
+
+      .paginacion {
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+
+      .paginacion button {
+        padding: 8px 12px;
+        min-width: 35px;
+        height: 35px;
+        font-size: 12px;
+      }
+      
+      .modal-content {
+        padding: 15px;
+        margin: 5px;
+        max-width: 95%;
+        width: 95%;
+      }
+      
+      .modal-image-container {
+        margin: 50px 0 25px;
+      }
+      
+      .modal-image-container img {
+        max-width: calc(100% - 100px);
+        min-height: 250px;
+        max-height: none;
+      }
+      
+      .nav-button {
+        font-size: 20px;
+        padding: 10px 14px;
+      }
+      
+      .nav-button.left {
+        left: 5px;
+      }
+      
+      .nav-button.right {
+        right: 5px;
+      }
+      
+      .miniaturas {
+        margin: 25px 0;
+        gap: 8px;
+      }
+      
+      .miniaturas img {
+        width: 70px;
+        height: 60px;
+      }
+      
+      .modal-text {
+        padding: 0 5px;
+      }
+    }
+    
+    /* PANTALLAS PEQUEÑAS */
+    @media (max-width: 480px) {
+      .producto-linea img {
+        width: 100px;
+        height: 80px;
+      }
+      
+      .modal-image-container img {
+        min-height: 200px;
+        max-width: calc(100% - 80px);
+        max-height: none;
+      }
+      
+      .miniaturas img {
+        width: 55px;
+        height: 45px;
+      }
+      
+      .nav-button {
+        font-size: 18px;
+        padding: 8px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- BARRA DE NAVEGACIÓN -->
+<header class="barra-navegacion">
+  <div class="contenedor-navbar">
+    <div class="logo-nav">
+      <img src="Img/AM.png" alt="Logo AM">
+      <p>AUTOMOTRIZ MORA</p>
+    </div>
+    
+    <nav class="menu-nav">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="index.html#services">Servicios</a></li>
+        <li><a href="index.html#about">Nosotros</a></li>
+        <li><a href="index.html#contact">Contacto</a></li>
+        <li><a href="index.html#brands-carousel">Marcas</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- CONTENIDO PRINCIPAL -->
+<div class="main-content">
+
+<h1>PRODUCTOS Y ACEITES</h1>
+
+<div class="info-pagina" id="infoPagina">
+  Mostrando productos 1 - 5 de 9
+</div>
+
+<div class="lista-productos" id="listaProductos">
+</div>
+
+<div class="paginacion" id="paginacion">
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" title="Cerrar" aria-label="Cerrar" tabindex="0" role="button" 
+          onclick="cerrarModal()">&times;</span>
+    <div class="modal-image-container">
+      <button class="nav-button left" id="prevBtn" title="Anterior">&laquo;</button>
+      <img id="modal-img" src="" alt="Vista principal">
+      <button class="nav-button right" id="nextBtn" title="Siguiente">&raquo;</button>
+    </div>
+    <div class="miniaturas" id="miniaturas"></div>
+    <div class="modal-text">
+      <h2 id="modal-titulo"></h2>
+      <p><strong>Marca:</strong> <span id="modal-marca"></span></p>
+      <p id="modal-desc"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+const todosLosProductos = [
+  {
+    id: 1,
+    titulo: 'ARTICULACION (AVEO`S)',
+    marca: 'CTR',
+    imagenes: ['repuestos/artaveo.png'],
+    descripcion: 'Articulacion compatible con todo tipo de vehículo Aveo como: Aveo Family, Aveo Activo, Aveo Emotion, Chevy Taxi.'
+  },
+  {
+    id: 2,
+    titulo: 'TERMINAL (AVEO`S)',
+    marca: 'CTR',
+    imagenes: ['repuestos/termaveo.png'],
+    descripcion: 'Terminal compatible con todo tipo de vehículo Aveo como: Aveo Family, Aveo Activo, Aveo Emotion, Chevy Taxi.'
+  },
+  {
+    id: 3,
+    titulo: 'ROTULA (AVEO`S y Otros)',
+    marca: 'CTR',
+    imagenes: ['repuestos/rotulaveo.png'],
+    descripcion: 'Compatible con todos los vehículos Aveo`s y Sail.'
+  },
+  {
+    id: 4,
+    titulo: 'RULIMAN RUEDA DELANTERA (RD)',
+    marca: 'NTN',
+    imagenes: ['repuestos/rdaveo.png','repuestos/rdaveo1.1.png','repuestos/rdaveo1.2.png','repuestos/rdaveo.1.3.png'],
+    descripcion: 'Compatible con todos los vehículos Aveo, Daewoo Racer, Daewoo Lanos y Daewoo Cielo.'
+  },
+  {
+    id: 5,
+    titulo: 'RULIMAN RUEDA POSTERIOR (AVEO`S y Otros)',
+    marca: 'NTN',
+    imagenes: ['repuestos/rpaveo.png','repuestos/rpaveo1.1.png','repuestos/rpaveo1.2.png','repuestos/rpaveo1.3.png'],
+    descripcion: 'Compatible con todos los vehículoss Aveo`s, Sail y Spark GT.'
+  },
+  {
+    id: 6,
+    titulo: 'MANZANA DELANTERA (AVEO`S y Otros)',
+    marca: 'PRO+',
+    imagenes: ['repuestos/mzaveo.jpg'],
+    descripcion: 'Manzana delantera compatible con todos los vehículos Aveo`s y Sail.'
+  },
+  {
+    id: 8,
+    titulo: 'DISCO DE FRENO DELANTERO (AVEO`S)',
+    marca: 'HIPER',
+    imagenes: ['repuestos/dfaveo.jpg'],
+    descripcion: 'Disco de frenos compatible con todos los vehículos Aveo`s'
+  },
+  {
+    id: 9,
+    titulo: 'TAMBOR DE FRENO (AVEO`S)',
+    marca: 'HIPER',
+    imagenes: ['repuestos/tfaveo.jpg'],
+    descripcion: 'Compatible con los vehículos: Aveo`s.'
+  },
+  {
+    id: 10,
+    titulo: 'AMORTIGUADOR DELANTERO (AVEO / SAIL)',
+    marca: 'G-CONTROL',
+    imagenes: ['repuestos/amdaveo.jpg','repuestos/amdaveo1.1.jpg'],
+    descripcion: 'Compatible con todos los Aveo`s y Sail.'
+  },
+  {
+    id: 11,
+    titulo: 'AMORTIGUADOR POSTERIOR (AVEO / SAIL)',
+    marca: 'G-CONTROL',
+    imagenes: ['repuestos/ampaveo.jpg'],
+    descripcion: 'Compatible con todos vehículos Aveo`s y Sail.'
+  },
+  {
+    id: 12,
+    titulo: 'GALLETAS / PASTILLAS DE FRENO (AVEO`S y Otros)',
+    marca: 'HI-Q',
+    imagenes: ['repuestos/gpfaveo.png'],
+    descripcion: 'Conocidas también como pastillas de freno, compatibles con vehículos como: Aveo`s, Daewoo Espero y Optra.'
+  },
+   {
+    id: 13,
+    titulo: 'ZAPATA (AVEO`S / SPARK GT)',
+    marca: 'OKAMI',
+    imagenes: ['repuestos/zptaveo.jpg'],
+    descripcion: 'Zapata compatible con vehículos Aveo`s y Spark GT'
+  },
+  {
+    id: 14,
+    titulo: 'CREMALLERA HIDRAULICA (AVEO`S)',
+    marca: 'PRO+',
+    imagenes: ['repuestos/crmlaveo.jpg'],
+    descripcion: 'Cremallera solo compatible con los vehículos Aveo`s.'
+  },
+  {
+    id: 15,
+    titulo: 'BASE DE AMORTIGUADOR DELANTERO (SPARK / AVEO / SAIL)',
+    marca: 'CONZINA',
+    imagenes: ['repuestos/badaveo.jpeg'],
+    descripcion: 'Modelo compatible con los siguientes vehículos: Spark, Aveo, Sail'
+  },
+  {
+    id: 16,
+    titulo: 'BASE DE AMORTIGUADOR POSTERIOR (AVEO / SAIL)',
+    marca: 'CONZINA',
+    imagenes: ['repuestos/bapaveo.png'],
+    descripcion: 'Modelo compatible con los vehículos Aveo`s y Sail.'
+  },
+   {
+    id: 17,
+    titulo: 'BRAZO DE ROTULA (SPARK)',
+    marca: 'CTR',
+    imagenes: ['repuestos/bdrspark.jpg', 'repuestos/bdrspark1.1.jpg'],
+    descripcion: 'Modelo de repuesto exclusivo para vehículos Spark.'
+  },
+    {
+    id: 18,
+    titulo: 'ARTICULACION (SPARK / DAEWOO MATIZ)',
+    marca: 'CTR',
+    imagenes: ['repuestos/artspark.jpg'],
+    descripcion: 'Articulacion de modelo compatible con los vehículos: Spark y Daewoo Matiz.'
+  },
+  {
+    id: 19,
+    titulo: 'TERMINAL (SPARK / DAEWOO MATIZ)',
+    marca: 'CTR',
+    imagenes: ['repuestos/termaspark.png'],
+    descripcion: 'Terminal de modelo compatible con los vehículos: Spark y Daewoo Matiz.'
+  },
+  {
+    id: 21,
+    titulo: 'RULIMAN RUEDA DELANTERA (SPARK / DAEWOO MATIZ)',
+    marca: 'KOYO',
+    imagenes: ['repuestos/rdspark.png','repuestos/rdspark1.1.png','repuestos/rdspark1.2.png','repuestos/rdspark1.3.png'],
+    descripcion: 'Compatible con los vehículos Spark y Daewoo Matiz.'
+  },
+  {
+    id: 23,
+    titulo: 'MANZANA DELANTERA (SPARK / DAEWOO MATIZ)',
+    marca: 'PRO+',
+    imagenes: ['repuestos/mzdspark.jpg'],
+    descripcion: 'Manzana delantera compatible con los vehículos Spark y Daewoo Matiz.'
+  },
+  {
+    id: 24,
+    titulo: 'DISCO DE FRENO DELANTERO (SPARK y Otros)',
+    marca: 'HIPER',
+    imagenes: ['repuestos/dfspark.jpg'],
+    descripcion: 'Disco de frenos compatible con los vehículos Spark, Daewoo Matiz y Optra'
+  },
+  {
+    id: 25,
+    titulo: 'TAMBOR DE FRENO (SPARK y Otros)',
+    marca: 'HIPER',
+    imagenes: ['repuestos/tfspark.jpg'],
+    descripcion: 'Compatible con los vehículos: Spark, Daewoo Matiz y Chery QQ.'
+  },
+  {
+    id: 26,
+    titulo: 'AMORTIGUADOR DELANTERO (SPARK)',
+    marca: 'MASARU',
+    imagenes: ['repuestos/amdaveo.jpg'],
+    descripcion: 'Modelo de repuesto compatible con vehículo Spark.'
+  },
+  {
+    id: 27,
+    titulo: 'AMORTIGUADOR POSTERIOR (SPARK)',
+    marca: 'G-CONTROL',
+    imagenes: ['repuestos/ampaveo.jpg'],
+    descripcion: 'Modelo de repuesto compatible con vehículo Spark.'
+  },
+  {
+    id: 28,
+    titulo: 'GALLETAS / PASTILLAS DE FRENO (SPARK y Otros)',
+    marca: 'HI-Q',
+    imagenes: ['repuestos/gpfspark.jpg'],
+    descripcion: 'Conocidas también como pastillas de freno, compatibles con vehículos como: Spark, Daewoo Matiz y Daewoo Lanos'
+  },
+   {
+    id: 29,
+    titulo: 'ZAPATA (SPARK y Otros)',
+    marca: 'PRO+',
+    imagenes: ['repuestos/zptspark.jpg'],
+    descripcion: 'Zapata compatible con vehículos: Spark, Daewoo Tico y Daewoo Matiz, '
+  },
+  {
+    id: 30,
+    titulo: 'CREMALLERA MECANICA (SPARK)',
+    marca: 'PRO+',
+    imagenes: ['repuestos/crmlspark.jpg'],
+    descripcion: 'Cremallera solo compatible con vehículos Spark.'
+  },
+    {
+    id: 34,
+    titulo: 'ARTICULACION (HYUNDAI ACCENT / HONDA)',
+    marca: 'CTR',
+    imagenes: ['repuestos/artha.jpg','repuestos/artha1.1.jpg'],
+    descripcion: 'Articulacion compatible con los siguientes vehículos: Hyundai Accent y Honda.'
+  },
+  {
+    id: 35,
+    titulo: 'TERMINAL (HYUNDAI`S)',
+    marca: 'CTR',
+    imagenes: ['repuestos/termaveo.png'],
+    descripcion: 'Terminal compatible con vehículoS Hyundai`s como: Hyundai Accent, Hyundai Matrix, Hyundai Getz, Hyundai Elantra.'
+  },
+  {
+    id: 36,
+    titulo: 'ROTULA (HYUNDAI MATRIX y Otros)',
+    marca: 'CTR',
+    imagenes: ['repuestos/rotulahym.jpg'],
+    descripcion: 'Conocida también como rotula inferior modelo compatible con vehículos Hyundai Matrix, Hyundai Getz, Hyundai Accent Verna.'
+  },
+  {
+    id: 37,
+    titulo: 'RULIMAN RUEDA DELANTERA (HYUNDAI ACCENT VERNA / NEW ACCENT)',
+    marca: 'SKF',
+    imagenes: ['repuestos/rulrdhyav.jpg','repuestos/rulrdhyav1.1.jpeg'],
+    descripcion: 'Compatible con los vehículos Hyundai Accent Verna y Nuevo Accent o New Accent.'
+  },
+  {
+    id: 38,
+    titulo: 'MANZANA DELANTERA (HYUNDAI ACCENT y Otros)',
+    marca: 'PRO+',
+    imagenes: ['repuestos/mzdhya.jpg'],
+    descripcion: 'Compatible con los siguientes vehículos: Hyundai Accent, Hyundai Getz y Nuevo Accent o New Accent.'
+  },
+  {
+    id: 39,
+    titulo: 'MANZANA POSTERIOR (HY. ACCENT VERNA y Otros)',
+    marca: 'PRO+',
+    imagenes: ['repuestos/mzphyav.jpg'],
+    descripcion: 'Manzana posterior compatible con vehículos Hyundai Accent Verna, Hyundai Atos.'
+  },
+  {
+    id: 40,
+    titulo: 'DISCO DE FRENO DELANTERO (HY. ACCENT VERNA)',
+    marca: 'ALL PARTS',
+    imagenes: ['repuestos/dfdhyav.jpg'],
+    descripcion: 'Modelo de disco de frenos exclusivo para vehículo Hyundai Accent verna. '
+  },
+  {
+    id: 41,
+    titulo: 'TAMBOR DE FRENO (HY. ACCENT VERNA)',
+    marca: 'HIPER',
+    imagenes: ['repuestos/tfhyav.jpeg'],
+    descripcion: 'Modelo exclusivo para vehículo Hyundai Accent Verna.'
+  },
+  {
+    id: 42,
+    titulo: 'AMORTIGUADOR DELANTERO (HY. ACCENT VERNA)',
+    marca: 'MASARU',
+    imagenes: ['repuestos/amortidelhyav.jpg'],
+    descripcion: 'Modelo de amortiguador compatible solo con el vehículo Hyundai Accent Verna.'
+  },
+  {
+    id: 43,
+    titulo: 'AMORTIGUADOR POSTERIOR (HY. ACCENT VERNA)',
+    marca: 'MASARU',
+    imagenes: ['repuestos/amorposthyav.jpg'],
+    descripcion: 'Amortiguador posterior modelo exclusivo solo para el vehículo Hyundai Accent Verna.'
+  },
+  {
+    id: 44,
+    titulo: 'GALLETAS / PASTILLAS DE FRENO (HY. ACCENT VERNA y Otros)',
+    marca: 'HI-Q',
+    imagenes: ['repuestos/gpfhyav.png'],
+    descripcion: 'Conocidas también como pastillas de freno, compatibles con vehículos como: Hyundai Accent Verna, Hyundai Getz.'
+  },
+   {
+    id: 45,
+    titulo: 'ZAPATA (HY. MATRIX y Otros)',
+    marca: 'PRO+',
+    imagenes: ['repuestos/zpthym.jpg'],
+    descripcion: 'Zapata compatible con vehículos Hyundai Matrix, Hyundai Accent Verna, Hyundai Elantra'
+  },
+  {
+    id: 47,
+    titulo: 'BASE DE AMORTIGUADOR DELANTERO (HY. ACCENT VERNA y Otros)',
+    marca: 'CONZINA',
+    imagenes: ['repuestos/badhyav.jpeg'],
+    descripcion: 'Modelo compatible con los siguientes vehículos: Hyundai Accent Verna, Hyundai Getz'
+  },
+  {
+    id: 48,
+    titulo: 'BASE DE AMORTIGUADOR POSTERIOR (HY. ACCENT VERNA)',
+    marca: 'CRB',
+    imagenes: ['repuestos/baphyav.jpg'],
+    descripcion: 'Modelo exclusivo para vehículo Hyundai Accent Verna.'
+  },
+   {
+    id: 49,
+    titulo: 'DISCO DE FRENO DELANTERO (SAIL y Otros)',
+    marca: 'Hiper',
+    imagenes: ['repuestos/dfdsail.jpg'],
+    descripcion: 'Disco de frenos compatible con los siguientes vehículos: Sail, Spark GT, Corsa Wind.'
+  },
+  {
+    id: 50,
+    titulo: 'TAMBOR DE FRENO (SAIL)',
+    marca: 'CONZINA',
+    imagenes: ['repuestos/tfsail.jpg'],
+    descripcion: 'Tambor de freno modelo exclusivo para vehículo Sail.'
+  }
+];
+
+// VARIABLES DE PAGINACIÓN
+let paginaActual = 1;
+const productosPorPagina = 5; 
+let imagenesActuales = [];
+let indiceImagen = 0;
+
+// FUNCIÓN PARA MOSTRAR PRODUCTOS DE LA PÁGINA ACTUAL
+function mostrarProductos() {
+  const inicio = (paginaActual - 1) * productosPorPagina;
+  const fin = inicio + productosPorPagina;
+  const productosActuales = todosLosProductos.slice(inicio, fin);
+  
+  const listaProductos = document.getElementById('listaProductos');
+  listaProductos.innerHTML = '';
+  
+  productosActuales.forEach(producto => {
+    const productoHTML = `
+      <div class="producto-linea" onclick="abrirModal('${producto.titulo}', '${producto.marca}', ${JSON.stringify(producto.imagenes).replace(/"/g, '&quot;')}, '${producto.descripcion}')">
+        <img src="${producto.imagenes[0]}" alt="Aceites">
+        <div class="producto-info">
+          <h2>${producto.titulo}</h2>
+          <p>CLIC PARA VER DETALLES</p>
+        </div>
+      </div>
+    `;
+    listaProductos.innerHTML += productoHTML;
+  });
+  
+  actualizarInfoPagina();
+}
+
+// FUNCIÓN PARA GENERAR PAGINACIÓN
+function generarPaginacion() {
+  const totalPaginas = Math.ceil(todosLosProductos.length / productosPorPagina);
+  const paginacion = document.getElementById('paginacion');
+
+  if (totalPaginas <= 1) {
+    paginacion.style.display = 'none';
+    return;
+  }
+
+  paginacion.style.display = 'flex';
+  paginacion.innerHTML = '';
+
+  // Botón Anterior
+  const btnAnterior = document.createElement('button');
+  btnAnterior.innerHTML = '« Anterior';
+  btnAnterior.onclick = () => cambiarPagina(paginaActual - 1);
+  btnAnterior.disabled = paginaActual === 1;
+  paginacion.appendChild(btnAnterior);
+
+  // Mostrar solo 5 botones de página
+  const maxBotonesVisibles = 5;
+  let inicio = Math.max(1, paginaActual - Math.floor(maxBotonesVisibles / 2));
+  let fin = inicio + maxBotonesVisibles - 1;
+
+  if (fin > totalPaginas) {
+    fin = totalPaginas;
+    inicio = Math.max(1, fin - maxBotonesVisibles + 1);
+  }
+
+  for (let i = inicio; i <= fin; i++) {
+    const btnPagina = document.createElement('button');
+    btnPagina.innerHTML = i;
+    btnPagina.onclick = () => cambiarPagina(i);
+    if (i === paginaActual) {
+      btnPagina.classList.add('active');
+    }
+    paginacion.appendChild(btnPagina);
+  }
+
+  // Botón Siguiente
+  const btnSiguiente = document.createElement('button');
+  btnSiguiente.innerHTML = 'Siguiente »';
+  btnSiguiente.onclick = () => cambiarPagina(paginaActual + 1);
+  btnSiguiente.disabled = paginaActual === totalPaginas;
+  paginacion.appendChild(btnSiguiente);
+}
+
+// FUNCIÓN PARA CAMBIAR DE PÁGINA
+function cambiarPagina(nuevaPagina) {
+  const totalPaginas = Math.ceil(todosLosProductos.length / productosPorPagina);
+  
+  if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+    paginaActual = nuevaPagina;
+    mostrarProductos();
+    generarPaginacion();
+    
+    // Scroll suave hacia arriba
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+}
+
+// FUNCIÓN PARA ACTUALIZAR INFO DE PÁGINA
+function actualizarInfoPagina() {
+  const inicio = (paginaActual - 1) * productosPorPagina + 1;
+  const fin = Math.min(paginaActual * productosPorPagina, todosLosProductos.length);
+  const total = todosLosProductos.length;
+  
+  document.getElementById('infoPagina').textContent = 
+    `Mostrando productos ${inicio} - ${fin} de ${total}`;
+}
+
+// FUNCIONES DEL MODAL (mantenidas igual)
+function abrirModal(titulo, marca, imagenes, descripcion) {
+  imagenesActuales = imagenes;
+  indiceImagen = 0;
+
+  document.getElementById("modal").style.display = "flex";
+  actualizarImagenModal();
+
+  document.getElementById("modal-titulo").textContent = titulo;
+  document.getElementById("modal-marca").textContent = marca;
+  document.getElementById("modal-desc").textContent = descripcion;
+
+  const miniaturas = document.getElementById("miniaturas");
+  miniaturas.innerHTML = '';
+  imagenes.forEach((img, idx) => {
+    const thumb = document.createElement("img");
+    thumb.src = img;
+    thumb.alt = `Vista ${idx + 1}`;
+    thumb.onclick = () => {
+      indiceImagen = idx;
+      actualizarImagenModal();
+      actualizarMiniaturas();
+    };
+    miniaturas.appendChild(thumb);
+  });
+  
+  actualizarMiniaturas();
+}
+
+function actualizarImagenModal() {
+  const imagenPrincipal = document.getElementById("modal-img");
+  imagenPrincipal.src = imagenesActuales[indiceImagen];
+}
+
+function actualizarMiniaturas() {
+  const thumbs = document.querySelectorAll(".miniaturas img");
+  thumbs.forEach((thumb, idx) => {
+    thumb.classList.toggle('active', idx === indiceImagen);
+  });
+}
+
+function cerrarModal() {
+  document.getElementById("modal").style.display = "none";
+}
+
+// Event listeners del modal
+document.getElementById("modal").addEventListener("click", function(e) {
+  if (e.target === this) {
+    cerrarModal();
+  }
+});
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape" && document.getElementById("modal").style.display === "flex") {
+    cerrarModal();
+  }
+});
+
+document.getElementById("prevBtn").addEventListener("click", () => {
+  indiceImagen = (indiceImagen > 0) ? indiceImagen - 1 : imagenesActuales.length - 1;
+  actualizarImagenModal();
+  actualizarMiniaturas();
+});
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  indiceImagen = (indiceImagen < imagenesActuales.length - 1) ? indiceImagen + 1 : 0;
+  actualizarImagenModal();
+  actualizarMiniaturas();
+});
+
+document.addEventListener("keydown", function(e) {
+  if (document.getElementById("modal").style.display === "flex") {
+    if (e.key === "ArrowLeft") {
+      document.getElementById("prevBtn").click();
+    } else if (e.key === "ArrowRight") {
+      document.getElementById("nextBtn").click();
+    }
+  }
+});
+
+// INICIALIZACIÓN
+mostrarProductos();
+generarPaginacion();
+</script>
+
+</body>
+</html>
